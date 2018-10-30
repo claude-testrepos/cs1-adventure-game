@@ -1,13 +1,62 @@
 from rooms import rooms
 
-current = "hall"
+HELP = """Commands:
+  go <direction>   move around
+  take <item>      pick something up
+  inventory        show what you carry
+  look             describe the room again
+  quit             give up
+"""
 
-while True:
-    print(rooms[current]["desc"])
-    cmd = input("> ").strip().lower()
-    if cmd == "quit":
-        break
-    if cmd in rooms[current]["exits"]:
-        current = rooms[current]["exits"][cmd]
-    else:
-        print("You can't go that way.")
+
+def describe(room, inventory):
+    if room.get("dark") and "lamp" not in inventory:
+        print("It is too dark to see anything.")
+        return
+    print(room["desc"])
+    if room["items"]:
+        print("You see: " + ", ".join(room["items"]))
+
+
+def main():
+    current = "hall"
+    inventory = []
+    print("Welcome! Type 'help' for a list of commands.")
+    describe(rooms[current], inventory)
+
+    while True:
+        words = input("> ").strip().lower().split()
+        if not words:
+            continue
+        verb = words[0]
+        noun = words[1] if len(words) > 1 else ""
+
+        if verb == "quit":
+            print("Bye!")
+            break
+        elif verb == "help":
+            print(HELP)
+        elif verb == "look":
+            describe(rooms[current], inventory)
+        elif verb == "inventory":
+            print("You carry: " + (", ".join(inventory) or "nothing"))
+        elif verb == "take":
+            if noun in rooms[current]["items"]:
+                rooms[current]["items"].remove(noun)
+                inventory.append(noun)
+                print("Taken: " + noun)
+            else:
+                print("There is no " + noun + " here.")
+        elif verb == "go":
+            exits = rooms[current]["exits"]
+            if noun not in exits:
+                print("You can't go that way.")
+                continue
+            current = exits[noun]
+            describe(rooms[current], inventory)
+        else:
+            print("I don't understand that.")
+
+
+if __name__ == "__main__":
+    main()
