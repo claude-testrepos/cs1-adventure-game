@@ -4,6 +4,7 @@ HELP = """Commands:
   go <direction>   move around
   take <item>      pick something up
   inventory        show what you carry
+  eat <item>       eat something
   look             describe the room again
   quit             give up
 """
@@ -38,6 +39,12 @@ def main():
             print(HELP)
         elif verb == "look":
             describe(rooms[current], inventory)
+        elif verb == "eat":
+            if noun in inventory:
+                inventory.remove(noun)
+                print("Yum. You feel stronger.")
+            else:
+                print("You don't have " + noun + ".")
         elif verb == "inventory":
             print("You carry: " + (", ".join(inventory) or "nothing"))
         elif verb == "take":
