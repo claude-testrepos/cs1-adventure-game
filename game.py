@@ -22,6 +22,7 @@ def describe(room, inventory):
 def main():
     current = "hall"
     inventory = []
+    moves = 0
     print("Welcome! Type 'help' for a list of commands.")
     describe(rooms[current], inventory)
 
@@ -63,10 +64,12 @@ def main():
             if target.get("locked"):
                 if "key" in inventory:
                     print("You unlock the door with the key and escape. You win!")
+                    print("You escaped in " + str(moves) + " moves.")
                     break
                 print("The door is locked.")
                 continue
             current = exits[noun]
+            moves += 1
             describe(rooms[current], inventory)
         else:
             print("I don't understand that.")
