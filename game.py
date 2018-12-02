@@ -52,6 +52,13 @@ def main():
             if noun not in exits:
                 print("You can't go that way.")
                 continue
+            target = rooms[exits[noun]]
+            if target.get("locked"):
+                if "key" in inventory:
+                    print("You unlock the door with the key and escape. You win!")
+                    break
+                print("The door is locked.")
+                continue
             current = exits[noun]
             describe(rooms[current], inventory)
         else:
