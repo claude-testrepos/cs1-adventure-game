@@ -8,4 +8,4 @@ Final project for Intro to Programming (Fall 2018).
 python3 game.py
 ```
 
-Find the key and esacpe the vault!
+Find the key and escape the vault!
